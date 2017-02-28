@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 指定工作空间，要与接口名相同，源代码没有去看，猜测应该是通过"这里的namespace.下边方法的id"来定位方法的 -->
+<mapper namespace="com.opm.core.plan.mapper.PlanMapper">
+	<!-- 计划申请信息 -->
+	<resultMap id="planAppInf" type="com.opm.core.plan.modle.PlanAppInfModel">
+		<result column="APP_NO" property="appNo"></result>
+		<result column="PROD_ID" property="prodId"></result>
+		<result column="PLAN_STATE" property="planState"></result>
+		<result column="PLAN_NAME" property="planName"></result>
+		<result column="PLAN_LOC" property="planLoc"></result>
+		<result column="PLAN_LOC_TOTAL" property="planLocTotal"></result>
+		<result column="VALUATION_METHOD" property="valuationMethod"></result>
+		<result column="PLAN_TYPE" property="planType"></result>
+		<result column="PLAN_ATTR" property="planAttr"></result>
+		<result column="TRUST_PLAN_ID" property="trustPlanId"></result>
+		<result column="ACCT_BEGIN_DATE" property="acctBeginDate"></result>
+		<result column="CONFIRM_FLAG" property="confirmFlag"></result>
+		<result column="COMMON_PLAN_ID" property="commonPlanId"></result>
+		<result column="CONFIRM_DATE" property="confirmDate"></result>
+		<result column="SOC_SEC_STRU" property="socSecStru"></result>
+		<result column="TRUST_CONTRACT" property="trustContract"></result>
+		<result column="SUBMIT_CTRL" property="submitCtrl"></result>
+		<result column="ACT_FLAG" property="actFlag"></result>
+		<result column="ACT_RATE" property="actRate"></result>
+		<result column="ACT_DATE" property="actDate"></result>
+	</resultMap>
+
+	<resultMap id="applicationInfo" type="com.opm.core.workflow.modle.ApplicationModle">
+		<result column="APP_NO" property="applyId"></result>
+		<result column="PLAN_ID" property="planId"></result>
+		<result column="PLAN_NAME" property="planName"></result>
+		<result column="APP_USER" property="applyUser"></result>
+		<result column="APP_TYPE" property="applyType" typeHandler="com.opm.common.typehandler.EnumApplyTypeHandler"></result>
+		<result column="APP_STATE" property="applyStatus" typeHandler="com.opm.common.typehandler.EnumApplyStatusHandler"></result>
+		<result column="APP_TIME" property="applyTime"></result>
+	</resultMap>
+
+	<!-- 获取所有的申请信息 -->
+	<select id="getPlanApplys" resultMap="applicationInfo">
+		SELECT APP_NO, PLAN_ID, PLAN_NAME, APP_USER, APP_TYPE, APP_STATE, APP_TIME
+		FROM OPM_APP
+		WHERE APP_STATE = 2
+	</select>
+
+	<!-- 获取计划申请信息 -->
+	<select id="getPlanAppDet" resultMap="planAppInf">
+		select *
+		from opm_plan_inf_app where app_no = #{appNo, jdbcType = INTEGER}
+	</select>
+</mapper>
